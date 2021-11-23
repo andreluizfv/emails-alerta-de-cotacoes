@@ -27,3 +27,10 @@ webscraping_email/x64/Release/libcurl.dll
 webscraping_email/x64/Release/zlib1.dll
 webscraping_email/x64/Debug/webscraping_email.exe
 webscraping_email/x64/Release/webscraping_email.exe
+*.dll
+*.h
+*.pdf
+*.png
+*.p7s
+webscraping_email/packages/Aspose.Email.Cpp.21.11.0/build/native/licenses/Aspose_End-User-License-Agreement.txt
+*.nupkg

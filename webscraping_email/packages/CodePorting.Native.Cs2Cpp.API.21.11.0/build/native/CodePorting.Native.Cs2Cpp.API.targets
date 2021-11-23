@@ -1,0 +1,39 @@
+﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Force-Enable-codeporting-native-cs-cpp-api)' == '' And ((!$(PlatformToolset.Contains('v14'))) Or ('$(Platform)' != 'x64' And '$(Platform)' != 'Win32') Or '$(ApplicationType)' != '')">
+    <Disable-codeporting-native-cs-cpp-api>true</Disable-codeporting-native-cs-cpp-api>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Force-Disable-codeporting-native-cs-cpp-api)' != ''">
+    <Disable-codeporting-native-cs-cpp-api>true</Disable-codeporting-native-cs-cpp-api>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Disable-codeporting-native-cs-cpp-api)' != 'true'">
+    <Link>
+      <AdditionalDependencies Condition="'$(Configuration)' == 'Debug' And '$(Platform)' == 'x64'">$(MSBuildThisFileDirectory)lib\aspose_cpp_vc14x64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)' == 'Release' And '$(Platform)' == 'x64'">$(MSBuildThisFileDirectory)lib\aspose_cpp_vc14x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)' == 'Debug' And '$(Platform)' == 'Win32'">$(MSBuildThisFileDirectory)lib\aspose_cpp_vc14x86d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)' == 'Release' And '$(Platform)' == 'Win32'">$(MSBuildThisFileDirectory)lib\aspose_cpp_vc14x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Debug' And '$(Platform)' == 'x64' And '$(Disable-codeporting-native-cs-cpp-api)' != 'true'">
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)lib\aspose_cpp_vc14x64d.dll" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(Platform)' == 'x64' And '$(Disable-codeporting-native-cs-cpp-api)' != 'true'">
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)lib\aspose_cpp_vc14x64.dll" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Debug' And '$(Platform)' == 'Win32' And '$(Disable-codeporting-native-cs-cpp-api)' != 'true'">
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)lib\aspose_cpp_vc14x86d.dll" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(Platform)' == 'Win32' And '$(Disable-codeporting-native-cs-cpp-api)' != 'true'">
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)lib\aspose_cpp_vc14x86.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(MSBuildThisFileDirectory)tools\aspose_types.natvis" Condition="Exists('$(MSBuildThisFileDirectory)tools\aspose_types.natvis')"/>
+    <Natvis Include="$(MSBuildThisFileDirectory)misc\natvis\aspose_types.natvis" Condition="Exists('$(MSBuildThisFileDirectory)misc\natvis\aspose_types.natvis')"/>
+  </ItemGroup>
+  <Target Name="PlatformCheck" BeforeTargets="PrepareForBuild">
+    <Error Condition="!$(PlatformToolset.Contains('v14'))" Text="CodePorting.Native Cs2Cpp API Library error: Only 'v14x' toolset is supported." />
+    <Error Condition="'$(Platform)' != 'x64' And '$(Platform)' != 'Win32'" Text="CodePorting.Native Cs2Cpp API Library error: Only 'x64' and 'Win32' platforms are supported, but the current platform is '$(Platform)'." />
+  </Target>
+</Project>

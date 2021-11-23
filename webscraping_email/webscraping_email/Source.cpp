@@ -60,10 +60,61 @@ double get_cotacao(string acao) {
     return make_double(val_str);
 }
 //-----------------------------------------------fim webscraping, comeco da parte de email---------------------
+#include <system/string.h>
+#include <system/shared_ptr.h>
+#include <system/object.h>
+#include "system/console.h"
+#include <AttachmentCollection.h>
+#include <Attachment.h>
+#include <SaveOptions.h>
+#include <MsgSaveOptions.h>
+#include <MailMessage.h>
+#include <MailAddressCollection.h>
+#include <Licensing/License.h>
+#include <cstdint>
+#include <system/exceptions.h>
+#include <system/diagnostics/trace.h>
+#include <Clients/Smtp/SmtpClient/SmtpClient.h>
+#include <Clients/SecurityOptions.h>
+using namespace System;
+using namespace Aspose::Email::Clients::Smtp;
+using namespace Aspose::Email::Clients;
+using namespace Aspose::Email;
+
+using namespace Aspose::Email;
+
+void send_email() {
+    SharedPtr<MailMessage> message = System::MakeObject<MailMessage>();
+    message->set_Subject(u"New message created by Aspose.Email for .NET");
+    message->set_IsBodyHtml(false);
+    message->set_Body(String("Hello"));
+    message->set_From(u"andreluiz.lf11@gmail.com");
+    message->get_To()->Add(u"andreluiz.lf11@hotmail.com");
+    SharedPtr<SmtpClient> client = MakeObject<SmtpClient>();
+    client->set_Host(u"smtp.gmail.com");
+    client->set_Username(u"andreluiz.lf11@gmail.com");
+    client->set_Password(u"***");
+    client->set_Port(587);
+    client->set_SecurityOptions(Aspose::Email::Clients::SecurityOptions::SSLExplicit);
+    try
+    {
+        // Client.Send will send this message
+        client->Send(message);
+        cout << "enviei" << endl;
+    }
+    catch (System::Exception& ex)
+    {
+        cout << "nao consegui enviar" << endl;
+        cout<<(System::ObjectExt::ToString(ex));
+    }
+}
+
+//-------------------------------------------------------------------------------
 
 
 int main(int argc, char* argv[])
 {
+    send_email();
     vector<string> acoes;
     vector<double> minimos, maximos, atuais;
     int intervalo_medidas = 5;
