@@ -25,8 +25,6 @@ webscraping_email/webscraping_email/x64/Release/webscraping_email.ipdb
 webscraping_email/webscraping_email/x64/Release/webscraping_email.vcxproj.FileListAbsolute.txt
 webscraping_email/x64/Release/libcurl.dll
 webscraping_email/x64/Release/zlib1.dll
-webscraping_email/x64/Debug/webscraping_email.exe
-webscraping_email/x64/Release/webscraping_email.exe
 *.dll
 *.h
 *.pdf
