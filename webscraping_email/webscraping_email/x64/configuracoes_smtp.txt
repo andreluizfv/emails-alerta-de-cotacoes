@@ -1,0 +1,4 @@
+server_smtp:smtp.gmail.com
+porta:587
+email_remetente:entregavelestagio@gmail.com
+senha:987654321abcd

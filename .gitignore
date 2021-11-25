@@ -34,3 +34,10 @@ webscraping_email/x64/Release/webscraping_email.exe
 *.p7s
 webscraping_email/packages/Aspose.Email.Cpp.21.11.0/build/native/licenses/Aspose_End-User-License-Agreement.txt
 *.nupkg
+*.lib
+*.targets
+*.bin
+*.CopyComplete
+webscraping_email/packages/CodePorting.Native.Cs2Cpp.API.21.11.0/build/native/licenses/Aspose_End-User-License-Agreement.txt
+*.natvis
+*.config
