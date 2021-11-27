@@ -8,25 +8,24 @@
 #include "mercado.h"
 #include "email.h"
 
-using namespace std;
 
 int main(int argc, char* argv[])
 {
-    vector<string> emails, acoes;
-    string novoemail, smtp_server, email_emissor, porta;
-    vector<double> minimos, maximos, atuais;
-    map <pair<string, int>, bool> ja_informado;
+    std::vector<std::string> emails, acoes;
+    std::string novoemail, smtp_server, email_emissor, porta;
+    std::vector<double> minimos, maximos, atuais;
+    std::map <std::pair<std::string, int>, bool> ja_informado;
     int intervalo_medidas = 5;
     configuracoes_remetente config_rem;
-    ifstream arq_config = ifstream("configuracoes_smtp.txt");
-    ifstream arq_emails = ifstream("emails_destino.txt");
+    std::ifstream arq_config = std::ifstream("configuracoes_smtp.txt");
+    std::ifstream arq_emails = std::ifstream("emails_destino.txt");
 
     if (!arq_emails) { 
-        cerr << "O arquivo com os emails destino nao conseguiu ser aberto." << endl;
+        std::cerr << "O arquivo com os emails destino nao conseguiu ser aberto." << std::endl;
         exit(1);
     }
     if (!arq_config) { 
-        cerr << "O arquivo com as configuracoes do servidor nao conseguiu ser aberto." << endl;
+        std::cerr << "O arquivo com as configuracoes do servidor nao conseguiu ser aberto." << std::endl;
         exit(2);
     }
 
@@ -45,34 +44,34 @@ int main(int argc, char* argv[])
     arq_config >> config_rem.senha;
 
     if (argc < 4 or argc % 3 !=1 ) {
-        cerr << "Numero de argumentos (acoes e intervalos) invalido." << endl;
+        std::cerr << "Numero de argumentos (acoes e intervalos) invalido." << std::endl;
         exit(2);
     }
     else{
         for (int counter = 1; counter < argc; counter++) {
             if (counter % 3 == 1)acoes.push_back(argv[counter]); 
-            else if (counter % 3 == 2) minimos.push_back(stod(string(argv[counter])));
-            else maximos.push_back(stod(string(argv[counter])));
+            else if (counter % 3 == 2) minimos.push_back(stod(std::string(argv[counter])));
+            else maximos.push_back(stod(std::string(argv[counter])));
         }
     }
-    cout << endl;
+    std::cout << std::endl;
     for (int i = 0; i < acoes.size(); i++) {
-        cout << acoes[i] << " " << minimos[i] << " " << maximos[i] << endl;
+        std::cout << acoes[i] << " " << minimos[i] << " " << maximos[i] << std::endl;
     }
     atuais.resize(acoes.size());
     
     while (true) {    
-        cout << "Monitorando os valores de:" << endl;
+        std::cout << "Monitorando os valores de:" << std::endl;
         for (int i = 0; i < acoes.size(); i++) {
             atuais[i] = get_cotacao(acoes[i]);
-            cout << acoes[i] << " : " << atuais[i] << endl;
+            std::cout << acoes[i] << " : " << atuais[i] << std::endl;
             if (atuais[i]<minimos[i] and !ja_informado[{acoes[i], COMPRA}]) {
-                cout << "enviando email: hora de comprar " << acoes[i] << endl;
+                std::cout << "enviando email: hora de comprar " << acoes[i] << std::endl;
                 informar_alerta(acoes[i], atuais[i], minimos[i], emails, config_rem);
                 ja_informado[{acoes[i], COMPRA}] = true;
             }
             else if (atuais[i] > maximos[i] and !ja_informado[{acoes[i], VENDA}]) {
-                cout << "enviando email: hora de vender " << acoes[i] << endl;
+                std::cout << "enviando email: hora de vender " << acoes[i] << std::endl;
                 informar_alerta(acoes[i], atuais[i], maximos[i], emails, config_rem);
                 ja_informado[{acoes[i], VENDA}] = true;
             }
@@ -87,7 +86,9 @@ int main(int argc, char* argv[])
                 }
             }
         }
-        this_thread::sleep_for(chrono::seconds(intervalo_medidas));
+       std::this_thread::sleep_for(std::chrono::seconds(intervalo_medidas));
     }
+    arq_config.close();
+    arq_emails.close();
     return 0;
 }

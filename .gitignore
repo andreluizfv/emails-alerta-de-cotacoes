@@ -17,7 +17,6 @@ webscraping_email/.vs/webscraping_email/v17/.suo
 *.log
 *.tlog
 *.tlog
-webscraping_email/packages
 webscraping_email/webscraping_email/x64
 webscraping_email/webscraping_email/x64/Debug/webscraping_email.exe.recipe
 webscraping_email/webscraping_email/x64/Debug/webscraping_email.ilk
@@ -28,6 +27,7 @@ webscraping_email/webscraping_email/x64/Release/webscraping_email.vcxproj.FileLi
 webscraping_email/x64/Release/libcurl.dll
 webscraping_email/x64/Release/zlib1.dll
 *.dll
+*.h
 *.pdf
 *.png
 *.p7s
