@@ -28,7 +28,6 @@ webscraping_email/webscraping_email/x64/Release/webscraping_email.vcxproj.FileLi
 webscraping_email/x64/Release/libcurl.dll
 webscraping_email/x64/Release/zlib1.dll
 *.dll
-*.h
 *.pdf
 *.png
 *.p7s
