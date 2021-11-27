@@ -17,6 +17,7 @@ webscraping_email/.vs/webscraping_email/v17/.suo
 *.log
 *.tlog
 *.tlog
+webscraping_email/packages
 webscraping_email/webscraping_email/x64
 webscraping_email/webscraping_email/x64/Debug/webscraping_email.exe.recipe
 webscraping_email/webscraping_email/x64/Debug/webscraping_email.ilk
