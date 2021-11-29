@@ -77,10 +77,12 @@ int main(int argc, char* argv[])
             }
             else if ((minimos[i] < atuais[i] and atuais[i] < maximos[i])) {
                 if (ja_informado[{acoes[i], COMPRA}]) {
+                    std::cout << "enviando email: passou a hora de comprar" << acoes[i] << std::endl;
                     informar_normalidade(acoes[i], atuais[i], COMPRA, emails, config_rem);
                     ja_informado[{acoes[i], COMPRA}] = false;
                 }
                 if (ja_informado[{acoes[i], VENDA}]) {
+                    std::cout << "enviando email: passou a hora de vender" << acoes[i] << std::endl;
                     informar_normalidade(acoes[i], atuais[i], VENDA, emails, config_rem);
                     ja_informado[{acoes[i], VENDA}] = false;
                 }

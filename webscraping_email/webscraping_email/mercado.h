@@ -1,5 +1,7 @@
 #pragma once
-#include<string>
+#ifndef MERCADO_H
+#define MERCADO_H
+#include <string>
 #include <gumbo.h>
 
 std::string extract_html_page(std::string acao);
@@ -10,3 +12,4 @@ double make_double(std::string s);
 
 double get_cotacao(std::string acao);
 
+#endif

@@ -1,5 +1,6 @@
 #pragma once
-
+#ifndef EMAIL_H
+#define EMAIL_H
 #include <system/shared_ptr.h>
 #include <system/object.h>
 #include <MailMessage.h>
@@ -31,4 +32,4 @@ void informar_alerta(std::string acao, double val_atual, double lim, std::vector
 
 void informar_normalidade(std::string acao, double val_atual, enum decisao dec, std::vector<std::string>& emails, struct configuracoes_remetente config_rem);
 
-
+#endif

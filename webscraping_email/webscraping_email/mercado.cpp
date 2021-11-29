@@ -1,6 +1,7 @@
 #include "mercado.h"
 #include<string>
 #include <cpr/cpr.h>
+#include "nlohmann/json.hpp"
 
 std::string extract_html_page(std::string acao)
 {
@@ -40,12 +41,10 @@ double make_double(std::string s) {
 double get_cotacao(std::string acao) {
     int numero_caracteres_no_double=0;
     std::string string_html = extract_html_page(acao);
-    std::string buscando = "\"regularMarketPrice\":";
-    size_t local_encontrado = string_html.find(buscando) + buscando.size();
-    
-    for (int i = 0; string_html[i] != ','; i++) numero_caracteres_no_double++;
-
-    std::string val_str = string_html.substr(local_encontrado, numero_caracteres_no_double);
-
-    return make_double(val_str);
+    auto objjsn = json::parse(string_html);
+    std::string strresults = objjsn["results"].dump();
+    strresults = strresults.substr(1, strresults.size() - 2);
+    auto results = json::parse(strresults);
+    double val = results["regularMarketPrice"];
+    return val;
 }
