@@ -2,6 +2,7 @@
 #include<string>
 #include <cpr/cpr.h>
 #include "nlohmann/json.hpp"
+using json = nlohmann::json;
 
 std::string extract_html_page(std::string acao)
 {
@@ -47,4 +48,24 @@ double get_cotacao(std::string acao) {
     auto results = json::parse(strresults);
     double val = results["regularMarketPrice"];
     return val;
+}
+
+std::string extract_html_page_website(std::string acao)
+{
+    cpr::Url url = cpr::Url{ "https://statusinvest.com.br/acoes/" + acao };
+    cpr::Response response = cpr::Get(url);
+    return response.text;
+}
+
+double get_cotacao_website(std::string acao) {
+    std::string string_html = extract_html_page_website(acao);
+    GumboOutput* html_parseado = gumbo_parse(string_html.c_str());
+    std::string buscando = "Valor atual R$ ";
+
+    std::string texto_puro = cleantext(html_parseado->root);
+    size_t local_encontrado = texto_puro.find(buscando, 90) + buscando.size();
+    std::string val_str = texto_puro.substr(local_encontrado, 5);
+
+    gumbo_destroy_output(&kGumboDefaultOptions, html_parseado);
+    return make_double(val_str);
 }

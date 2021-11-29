@@ -64,6 +64,7 @@ int main(int argc, char* argv[])
         std::cout << "Monitorando os valores de:" << std::endl;
         for (int i = 0; i < acoes.size(); i++) {
             atuais[i] = get_cotacao(acoes[i]);
+            //atuais[i] = get_cotacao_website(acoes[i]);
             std::cout << acoes[i] << " : " << atuais[i] << std::endl;
             if (atuais[i]<minimos[i] and !ja_informado[{acoes[i], COMPRA}]) {
                 std::cout << "enviando email: hora de comprar " << acoes[i] << std::endl;
