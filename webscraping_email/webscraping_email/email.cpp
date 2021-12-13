@@ -1,4 +1,4 @@
-#include<string>
+#include <string>
 #include <system/shared_ptr.h>
 #include <system/object.h>
 #include <MailMessage.h>
@@ -10,12 +10,20 @@
 #include <vector>
 #include <iomanip>
 #include "email.h"
+#include "nlohmann/json.hpp"
+
 using namespace Aspose::Email::Clients::Smtp;
 using namespace Aspose::Email::Clients;
 using namespace System;
 using namespace Aspose::Email;
 
-
+configuracoes_remetente::configuracoes_remetente(nlohmann::json config) {
+    this->email_remetente = config["email_remetente"];
+    this->porta = config["porta"];
+    this->server_smtp = config["server_smtp"];
+    this->senha = config["senha"];
+    std::cout << this->senha << " " << this->server_smtp << " " << this->porta<<" " << this->email_remetente << std::endl;
+}
 
 
 void enviar(SharedPtr<MailMessage>& message, std::vector<std::string>& emails, struct configuracoes_remetente config_rem) {
@@ -30,7 +38,6 @@ void enviar(SharedPtr<MailMessage>& message, std::vector<std::string>& emails, s
     client->set_SecurityOptions(Aspose::Email::Clients::SecurityOptions::SSLExplicit);
     try
     {
-        // Client.Send will send this message
         client->Send(message);
         std::cout << "enviei" << std::endl;
     }

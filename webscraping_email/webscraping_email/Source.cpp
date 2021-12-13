@@ -7,7 +7,7 @@
 #include <sstream>
 #include "mercado.h"
 #include "email.h"
-
+#include "nlohmann/json.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -16,17 +16,18 @@ int main(int argc, char* argv[])
     std::vector<double> minimos, maximos, atuais;
     std::map <std::pair<std::string, int>, bool> ja_informado;
     int intervalo_medidas = 5;
-    configuracoes_remetente config_rem;
-    std::ifstream arq_config = std::ifstream("configuracoes_smtp.txt");
+    std::ifstream arq_config = std::ifstream("configuracoes_smtp.json");
     std::ifstream arq_emails = std::ifstream("emails_destino.txt");
-
+    configuracoes_remetente config_rem = configuracoes_remetente(nlohmann::json::parse(arq_config));
+    
     if (!arq_emails) { 
         std::cerr << "O arquivo com os emails destino nao conseguiu ser aberto." << std::endl;
         exit(1);
     }
-    if (!arq_config) { 
+    if (!arq_config) {
         std::cerr << "O arquivo com as configuracoes do servidor nao conseguiu ser aberto." << std::endl;
         exit(2);
+
     }
 
     while (!arq_emails.eof()) {
@@ -34,17 +35,10 @@ int main(int argc, char* argv[])
         arq_emails >> novoemail;
         emails.push_back(novoemail);
     }
-    arq_config.ignore(50, ':');
-    arq_config >> config_rem.server_smtp;
-    arq_config.ignore(50, ':');
-    arq_config >> config_rem.porta;
-    arq_config.ignore(50, ':');
-    arq_config >> config_rem.email_remetente;
-    arq_config.ignore(50, ':');
-    arq_config >> config_rem.senha;
+    
 
     if (argc < 4 or argc % 3 !=1 ) {
-        std::cerr << "Numero de argumentos (acoes e intervalos) invalido." << std::endl;
+        std::cerr << "Numero de argumentos (acoes ou intervalos) invalido." << std::endl;
         exit(2);
     }
     else{

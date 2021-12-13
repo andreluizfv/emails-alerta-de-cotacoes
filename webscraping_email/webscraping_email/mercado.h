@@ -3,6 +3,7 @@
 #define MERCADO_H
 #include <string>
 #include <gumbo.h>
+#include "nlohmann/json.hpp"
 
 std::string extract_html_page(std::string acao);
 

@@ -11,6 +11,7 @@
 #include <Clients/SecurityOptions.h>
 #include <vector>
 #include <string>
+#include "nlohmann/json.hpp"
 
 using namespace Aspose::Email::Clients::Smtp;
 using namespace Aspose::Email::Clients;
@@ -24,6 +25,7 @@ struct configuracoes_remetente {
     int32_t porta = 0;
     std::string email_remetente = "";
     std::string senha = "";
+    configuracoes_remetente(nlohmann::json config);
 };
 
 void enviar(SharedPtr<MailMessage>& message, std::vector<std::string>& emails, struct configuracoes_remetente config_rem);
