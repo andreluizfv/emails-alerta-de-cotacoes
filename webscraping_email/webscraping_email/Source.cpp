@@ -8,7 +8,6 @@
 #include "mercado.h"
 #include "email.h"
 
-
 int main(int argc, char* argv[])
 {
     std::vector<std::string> emails, acoes;
@@ -20,11 +19,11 @@ int main(int argc, char* argv[])
     std::ifstream arq_config = std::ifstream("configuracoes_smtp.txt");
     std::ifstream arq_emails = std::ifstream("emails_destino.txt");
 
-    if (!arq_emails) { 
+    if (!arq_emails) {
         std::cerr << "O arquivo com os emails destino nao conseguiu ser aberto." << std::endl;
         exit(1);
     }
-    if (!arq_config) { 
+    if (!arq_config) {
         std::cerr << "O arquivo com as configuracoes do servidor nao conseguiu ser aberto." << std::endl;
         exit(2);
     }
@@ -43,13 +42,13 @@ int main(int argc, char* argv[])
     arq_config.ignore(50, ':');
     arq_config >> config_rem.senha;
 
-    if (argc < 4 or argc % 3 !=1 ) {
+    if (argc < 4 or argc % 3 != 1) {
         std::cerr << "Numero de argumentos (acoes e intervalos) invalido." << std::endl;
         exit(2);
     }
-    else{
+    else {
         for (int counter = 1; counter < argc; counter++) {
-            if (counter % 3 == 1)acoes.push_back(argv[counter]); 
+            if (counter % 3 == 1)acoes.push_back(argv[counter]);
             else if (counter % 3 == 2) minimos.push_back(stod(std::string(argv[counter])));
             else maximos.push_back(stod(std::string(argv[counter])));
         }
@@ -59,14 +58,14 @@ int main(int argc, char* argv[])
         std::cout << acoes[i] << " " << minimos[i] << " " << maximos[i] << std::endl;
     }
     atuais.resize(acoes.size());
-    
-    while (true) {    
+
+    while (true) {
         std::cout << "Monitorando os valores de:" << std::endl;
         for (int i = 0; i < acoes.size(); i++) {
             atuais[i] = get_cotacao(acoes[i]);
             //atuais[i] = get_cotacao_website(acoes[i]);
             std::cout << acoes[i] << " : " << atuais[i] << std::endl;
-            if (atuais[i]<minimos[i] and !ja_informado[{acoes[i], COMPRA}]) {
+            if (atuais[i] < minimos[i] and !ja_informado[{acoes[i], COMPRA}]) {
                 std::cout << "enviando email: hora de comprar " << acoes[i] << std::endl;
                 informar_alerta(acoes[i], atuais[i], minimos[i], emails, config_rem);
                 ja_informado[{acoes[i], COMPRA}] = true;
@@ -89,7 +88,7 @@ int main(int argc, char* argv[])
                 }
             }
         }
-       std::this_thread::sleep_for(std::chrono::seconds(intervalo_medidas));
+        std::this_thread::sleep_for(std::chrono::seconds(intervalo_medidas));
     }
     arq_config.close();
     arq_emails.close();

@@ -1,4 +1,4 @@
-#include<string>
+#include <string>
 #include <system/shared_ptr.h>
 #include <system/object.h>
 #include <MailMessage.h>
@@ -38,6 +38,7 @@ void enviar(SharedPtr<MailMessage>& message, std::vector<std::string>& emails, s
     {
         std::cout << "nao consegui enviar" << std::endl;
         std::cout << (System::ObjectExt::ToString(ex));
+        std::cout << "\n";
     }
 }
 
