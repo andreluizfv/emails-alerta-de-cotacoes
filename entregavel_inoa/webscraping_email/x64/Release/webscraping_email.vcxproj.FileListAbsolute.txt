@@ -1,0 +1,2 @@
+C:\Users\andre\Documents\cpp\webscrapping\webscraping_email\webscraping_email\webscraping_email\x64\Release\webscraping_email.vcxproj.CopyComplete
+C:\Users\andre\Documents\cpp\webscrapping\webscraping_email\entregavel_inoa\webscraping_email\x64\Release\webscraping_email.vcxproj.CopyComplete
