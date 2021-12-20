@@ -19,8 +19,14 @@ sender_config::sender_config(nlohmann::json config) {
     this->password = config["password"];
     //std::cout << this->password << " " << this->server_smtp << " " << this->port<<" " << this->sender_mail << std::endl;
 }
+sender_config::sender_config() {
+    this->sender_mail = "";
+    this->port = 25;
+    this->server_smtp = "";
+    this->password = "";
+}
 
-void enviar(SharedPtr<MailMessage>& message, std::vector<std::string>& emails, struct sender_config config_rem) {
+void send_message(SharedPtr<MailMessage>& message, std::vector<std::string>& emails, struct sender_config config_rem) {
     message->set_From(String(config_rem.sender_mail));
     for (std::string& email : emails)
         message->get_To()->Add(String(email));
@@ -43,7 +49,7 @@ void enviar(SharedPtr<MailMessage>& message, std::vector<std::string>& emails, s
     }
 }
 
-void send_alert(std::string stock, double curr_val, double lim, std::vector<std::string>& emails, struct sender_config config_send) {
+void inform_alert(std::string stock, double curr_val, double lim, std::vector<std::string>& emails, struct sender_config config_send) {
     std::stringstream conversor;
     conversor << std::fixed << std::setprecision(2) << curr_val;
     std::string str_curr_v = conversor.str();
@@ -64,7 +70,7 @@ void send_alert(std::string stock, double curr_val, double lim, std::vector<std:
         message->set_Body(String("A " + stock + " atingiu o valor de " + str_curr_v +
             "$, maior que o limite informado de " + lim_string + "$, sendo recomendada sua venda."));
     }
-    enviar(message, emails, config_send);
+    send_message(message, emails, config_send);
 }
 
 
@@ -85,5 +91,5 @@ void inform_default_price(std::string stock, double curr_val, enum decision dec,
         message->set_Body(String("A " + stock + " caiu para o valor de " + std::to_string(curr_val) +
             "$, nao sendo mais recomendada sua venda."));
     }
-    enviar(message, emails, config_rem);
+    send_message(message, emails, config_rem);
 }

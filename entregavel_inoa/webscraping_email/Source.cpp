@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
     int check_delay = 5; //in seconds
     std::ifstream config_file = std::ifstream("smtp_config.json");
     std::ifstream addrs_file = std::ifstream("to_addrs.txt");
-    sender_config sender_config_obj = sender_config(nlohmann::json::parse(config_file));
+    sender_config sender_config_obj;
     
     if (!addrs_file) { 
         std::cerr << "File with e-mail addresses could not be open." << std::endl;
@@ -27,15 +27,15 @@ int main(int argc, char* argv[])
     if (!config_file) {
         std::cerr << "File with server settings could not be open." << std::endl;
         exit(2);
-
     }
+
+    sender_config_obj = sender_config(nlohmann::json::parse(config_file));
 
     while (!addrs_file.eof()) {
         addrs_file.ignore(50, ':');
         addrs_file >> newemail;
         emails.push_back(newemail);
     }
-    
 
     if (argc < 4 or argc % 3 !=1 ) {
         std::cerr << "Arguments were not properly sent (correct example: .\projeto_cotacao_email.exe MGLU3 8.15 8.25 PETR4 25 26)." << std::endl;
@@ -62,12 +62,12 @@ int main(int argc, char* argv[])
             std::cout << stocks[i] << " : " << currents[i] << std::endl;
             if (currents[i]<mins[i] and !already_informed[{stocks[i], BUY}]) {
                 std::cout << "sending email: time to buy " << stocks[i] << std::endl;
-                send_alert(stocks[i], currents[i], mins[i], emails, sender_config_obj);
+                inform_alert(stocks[i], currents[i], mins[i], emails, sender_config_obj);
                 already_informed[{stocks[i], BUY}] = true;
             }
             else if (currents[i] > maxs[i] and !already_informed[{stocks[i], SELL}]) {
                 std::cout << "sending email: time to sell " << stocks[i] << std::endl;
-                send_alert(stocks[i], currents[i], maxs[i], emails, sender_config_obj);
+                inform_alert(stocks[i], currents[i], maxs[i], emails, sender_config_obj);
                 already_informed[{stocks[i], SELL}] = true;
             }
             else if ((mins[i] < currents[i] and currents[i] < maxs[i])) {
