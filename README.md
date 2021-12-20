@@ -1,8 +1,11 @@
 # Instruções
 ## Executável
-Na pasta
-webscraping_email/x64/Release/,
-junto ao arquivo de configurações com a lista de emails a serem enviados e as informações do remetente.
+No zip contido em
+emails-alerta-de-cotacoes/entregavel_inoa/x64/Release/final.rar,
+extrair o executavel junto ao arquivo de configurações, das dll's e à lista de emails a serem enviados, e rodar o executavel com os argumentos, da seguinte forma:
+ .\quotation_mail_project.exe MGLU3 8.15 8.25 PETR4 25 26
 ## Código da main 
 Na pasta
-webscraping_email/webscraping_email/Source.cpp.
+emails-alerta-de-cotacoes/entregavel_inoa/webscraping_email/Source.cpp, 
+emails-alerta-de-cotacoes/entregavel_inoa/webscraping_email/email.cpp, 
+emails-alerta-de-cotacoes/entregavel_inoa/webscraping_email/market.cpp, 
