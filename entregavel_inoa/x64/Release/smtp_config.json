@@ -1,0 +1,6 @@
+{
+    "server_smtp": "smtp.gmail.com",
+    "sender_mail": "entregavelestagio@gmail.com",
+    "password": "9876543212023",
+    "port": 587
+}
