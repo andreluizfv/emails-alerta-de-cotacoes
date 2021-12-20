@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
                     std::cout << "sending email: no longer is time to sell" << stocks[i] << std::endl;
                     inform_default_price(stocks[i], currents[i], SELL, emails, sender_config_obj);
                     already_informed[{stocks[i], SELL}] = false;
-                }
+                }//
             }
         }
        std::this_thread::sleep_for(std::chrono::seconds(check_delay));
