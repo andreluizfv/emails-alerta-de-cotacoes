@@ -12,82 +12,83 @@
 #include "email.h"
 #include "nlohmann/json.hpp"
 
-using namespace Aspose::Email::Clients::Smtp;
-using namespace Aspose::Email::Clients;
-using namespace System;
-using namespace Aspose::Email;
 
-configuracoes_remetente::configuracoes_remetente(nlohmann::json config) {
-    this->email_remetente = config["email_remetente"];
-    this->porta = config["porta"];
+
+
+
+
+sender_config::sender_config(nlohmann::json config) {
+    this->sender_mail = config["sender_mail"];
+    this->port = config["port"];
     this->server_smtp = config["server_smtp"];
-    this->senha = config["senha"];
-    std::cout << this->senha << " " << this->server_smtp << " " << this->porta<<" " << this->email_remetente << std::endl;
+    this->password = config["password"];
+    //std::cout << this->password << " " << this->server_smtp << " " << this->port<<" " << this->sender_mail << std::endl;
 }
 
 
-void enviar(SharedPtr<MailMessage>& message, std::vector<std::string>& emails, struct configuracoes_remetente config_rem) {
-    message->set_From(String(config_rem.email_remetente));
+void enviar(SharedPtr<MailMessage>& message, std::vector<std::string>& emails, struct sender_config config_rem) {
+    message->set_From(String(config_rem.sender_mail));
     for (std::string& email : emails)
         message->get_To()->Add(String(email));
     SharedPtr<SmtpClient> client = MakeObject<SmtpClient>();
     client->set_Host(String(config_rem.server_smtp));
-    client->set_Username(String(config_rem.email_remetente));
-    client->set_Password(String(config_rem.senha));
-    client->set_Port(config_rem.porta);
+    client->set_Username(String(config_rem.sender_mail));
+    client->set_Password(String(config_rem.password));
+    client->set_Port(config_rem.port);
     client->set_SecurityOptions(Aspose::Email::Clients::SecurityOptions::SSLExplicit);
     try
     {
         client->Send(message);
-        std::cout << "enviei" << std::endl;
+        std::cout << "Sent." << std::endl;
     }
     catch (System::Exception& ex)
     {
-        std::cout << "nao consegui enviar" << std::endl;
-        std::cout << (System::ObjectExt::ToString(ex));
+        std::cout << "There was a problem on sending." << std::endl;
+        std::cout << (System::ObjectExt::ToString(ex))<<"\n";
+        
     }
 }
 
-void informar_alerta(std::string acao, double val_atual, double lim, std::vector<std::string>& emails, struct configuracoes_remetente config_rem) {
+void send_alert(std::string stock, double curr_val, double lim, std::vector<std::string>& emails, struct sender_config config_send) {
     std::stringstream conversor;
-    conversor << std::fixed << std::setprecision(2) << val_atual;
-    std::string val_atual_string = conversor.str();
+    conversor << std::fixed << std::setprecision(2) << curr_val;
+    std::string str_curr_v = conversor.str();
     conversor.str(std::string());
     conversor << std::fixed << std::setprecision(2) << lim;
     std::string lim_string = conversor.str();
     SharedPtr<MailMessage> message = System::MakeObject<MailMessage>();
     message->set_IsBodyHtml(false);
-    if (val_atual < lim) {
-        std::string assunto = ("Alerta de mercado: hora de comprar " + acao);
-        message->set_Subject(String(assunto));
-        message->set_Body(String("A " + acao + " atingiu o valor de " + val_atual_string +
-            "$, menor que o limite informado de " + lim_string + "$, sendo recomendada sua venda."));
+    if (curr_val < lim) {
+        std::string subject = ("Alerta de mercado: hora de comprar " + stock);
+        message->set_Subject(String(subject));
+        message->set_Body(String("A " + stock + " atingiu o valor de " + str_curr_v +
+            "$, menor que o limite informado de " + lim_string + "$, sendo recomendada sua compra."));
     }
     else {
-        std::string assunto = "Alerta de mercado: hora de vender " + acao;
-        message->set_Subject(String(assunto));
-        message->set_Body(String("A " + acao + " atingiu o valor de " + val_atual_string +
+        std::string subject = "Alerta de mercado: hora de vender " + stock;
+        message->set_Subject(String(subject));
+        message->set_Body(String("A " + stock + " atingiu o valor de " + str_curr_v +
             "$, maior que o limite informado de " + lim_string + "$, sendo recomendada sua venda."));
     }
-    enviar(message, emails, config_rem);
+    enviar(message, emails, config_send);
 }
 
 
-void informar_normalidade(std::string acao, double val_atual, enum decisao dec, std::vector<std::string>& emails, struct configuracoes_remetente config_rem) {
-    std::string val_atual_string;
+void inform_default_price(std::string stock, double curr_val, enum decision dec, std::vector<std::string>& emails, struct sender_config config_rem) {
+    std::string str_curr_v;
     std::string lim_string;
     SharedPtr<MailMessage> message = System::MakeObject<MailMessage>();
     message->set_IsBodyHtml(false);
-    if (dec == COMPRA) {
-        std::string assunto = "Alerta expirado: passou da hora de comprar " + acao;
-        message->set_Subject(String(assunto));
-        message->set_Body(String("A " + acao + " subiu para o valor de " + std::to_string(val_atual) +
+    if (dec == BUY) {
+        std::string subject = "Alerta expirado: passou da hora de comprar " + stock;
+        message->set_Subject(String(subject));
+        message->set_Body(String("A " + stock + " subiu para o valor de " + std::to_string(curr_val) +
             "$, nao sendo mais recomendada sua compra."));
     }
     else {
-        std::string assunto = "Alerta expirado: passou da hora de vender " + acao;
-        message->set_Subject(String(assunto));
-        message->set_Body(String("A " + acao + " caiu para o valor de " + std::to_string(val_atual) +
+        std::string subject = "Alerta expirado: passou da hora de vender " + stock;
+        message->set_Subject(String(subject));
+        message->set_Body(String("A " + stock + " caiu para o valor de " + std::to_string(curr_val) +
             "$, nao sendo mais recomendada sua venda."));
     }
     enviar(message, emails, config_rem);

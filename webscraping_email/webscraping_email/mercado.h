@@ -5,7 +5,7 @@
 #include <gumbo.h>
 #include "nlohmann/json.hpp"
 
-std::string extract_html_page(std::string acao);
+std::string extract_json_from_api(std::string acao);
 
 //std::string extract_html_page_website(std::string acao);
 
@@ -13,7 +13,7 @@ std::string extract_html_page(std::string acao);
 
 //double make_double(std::string s);
 
-double get_cotacao(std::string acao);
+double get_quotation(std::string acao);
 
 //double get_cotacao_website(std::string acao);
 #endif

@@ -18,20 +18,20 @@ using namespace Aspose::Email::Clients;
 using namespace System;
 using namespace Aspose::Email;
 
-enum decisao { VENDA, COMPRA };
+enum decision { SELL, BUY };
 
-struct configuracoes_remetente {
+struct sender_config { 
     std::string server_smtp = "";
-    int32_t porta = 0;
-    std::string email_remetente = "";
-    std::string senha = "";
-    configuracoes_remetente(nlohmann::json config);
+    int32_t port = 0;
+    std::string sender_mail = "";
+    std::string password = "";
+    sender_config(nlohmann::json config);
 };
 
-void enviar(SharedPtr<MailMessage>& message, std::vector<std::string>& emails, struct configuracoes_remetente config_rem);
+void enviar(SharedPtr<MailMessage>& message, std::vector<std::string>& emails, struct sender_config config_rem);
 
-void informar_alerta(std::string acao, double val_atual, double lim, std::vector<std::string>& emails, struct configuracoes_remetente config_rem);
+void send_alert(std::string stock, double curr_val, double lim, std::vector<std::string>& emails, struct sender_config config_send);
 
-void informar_normalidade(std::string acao, double val_atual, enum decisao dec, std::vector<std::string>& emails, struct configuracoes_remetente config_rem);
+void inform_default_price(std::string stock, double curr_val, enum decision dec, std::vector<std::string>& emails, struct sender_config config_rem);
 
 #endif

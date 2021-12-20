@@ -3,7 +3,7 @@
 #include <cpr/cpr.h>
 #include "nlohmann/json.hpp"
 
-std::string extract_html_page(std::string acao)
+std::string extract_json_from_api(std::string acao)
 {
     cpr::Url url = cpr::Url{ "https://brapi.ga/api/quote/" + acao };
     cpr::Response response = cpr::Get(url);
@@ -38,9 +38,9 @@ double make_double(std::string s) {
     return stod(s);
 }
 */
-double get_cotacao(std::string acao) {
+double get_quotation(std::string acao) {
     int numero_caracteres_no_double=0;
-    std::string string_html = extract_html_page(acao);
+    std::string string_html = extract_json_from_api(acao);
     auto objjsn = nlohmann::json::parse(string_html);
     std::string strresults = objjsn["results"].dump();
     strresults = strresults.substr(1, strresults.size() - 2);
@@ -57,7 +57,7 @@ std::string extract_html_page_website(std::string acao)
 }
 */
 /*
-double get_cotacao_website(std::string acao) {
+double get_quotation_website(std::string acao) {
     std::string string_html = extract_html_page_website(acao);
     GumboOutput* html_parseado = gumbo_parse(string_html.c_str());
     std::string buscando = "Valor atual R$ ";
