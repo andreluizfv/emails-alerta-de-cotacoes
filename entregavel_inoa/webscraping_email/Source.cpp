@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
     }
     else{
         for (int counter = 1; counter < argc; counter++) {
-            if (counter % 3 == 1)stocks.push_back(argv[counter]); 
+            if (counter % 3 == 1) stocks.push_back(argv[counter]); 
             else if (counter % 3 == 2) mins.push_back(stod(std::string(argv[counter])));
             else maxs.push_back(stod(std::string(argv[counter])));
         }

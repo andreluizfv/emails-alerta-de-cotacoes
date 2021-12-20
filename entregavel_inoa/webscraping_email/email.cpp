@@ -12,11 +12,6 @@
 #include "email.h"
 #include "nlohmann/json.hpp"
 
-
-
-
-
-
 sender_config::sender_config(nlohmann::json config) {
     this->sender_mail = config["sender_mail"];
     this->port = config["port"];
@@ -24,7 +19,6 @@ sender_config::sender_config(nlohmann::json config) {
     this->password = config["password"];
     //std::cout << this->password << " " << this->server_smtp << " " << this->port<<" " << this->sender_mail << std::endl;
 }
-
 
 void enviar(SharedPtr<MailMessage>& message, std::vector<std::string>& emails, struct sender_config config_rem) {
     message->set_From(String(config_rem.sender_mail));
